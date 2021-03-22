@@ -3,9 +3,24 @@ from dataclasses import dataclass
 from typing import List, Iterator
 import re
 
-players = ["TRAVIS", "LAURA", "BRIAN", "SAM", "LIAM", "ASHLEY", "TALIESIN", "MARISHA", "ALL", "ASHLY", "MARK", "DANI",
-           "AUDIENCE"]
-dm = "MATT"
+players = ["TRAVIS", "LAURA", "SAM", "LIAM", "ASHLEY", "TALIESIN", "MARISHA",
+           "ASHLY", "DEBORAH", "SUMALEE", "KHARY", "MICA"]
+
+dm = ["MATT", "MATTHEW"]
+other = ["MARK", "DANI", "AUDIENCE", "BRIAN", "EVERYONE", "ALL", "BRANDON", "KEVIN", "MEREDITH", ""]
+
+name_typos = {
+    "MATT": ["MTT", "MATTHEW", "MTAT", "MAT", "AMTT", "MATTT"],
+    "SAM": ["SAN", "SMA", "NOTT", "SASM"],
+    "TRAVIS": ["TARVIS", "TRVS", "TRAVS", "TRAIVS", "FJORD", "TRAVIA"],
+    "TALIESIN": ["TALIEISN", "TALISEIN", "TALISIN", "TALISEN", "MOLLY", "TALEISIN", "TALEISN"],
+    "MARISHA": ["MAIRSHA", "MRAISHA", "ARISHA", "MARSISHA", "MATISHA", "MARIASHA", "MARISH", "MARISA", "MAISHA",
+                "BEAU", "MARISAH", "MARSIAH", "MARSHA", "MARIHSA"],
+    "LAURA": ["LAUR", "LAUAR", "LAUR", "LARUA", "LAIRA", "LAUDA", "LAUREN"],
+    "LIAM": ["CALEB", "IAM", "LAIM"],
+    "SUMALEE": ["NILA"],
+    "ASHLEY": ["ASLHEY", "ASHEY", "YASHA", "AHSLEY", "ASHELY"]
+}
 
 
 @dataclass
@@ -68,10 +83,19 @@ if __name__ == '__main__':
     for idx, ep_data in data.items():
         texts += list(generate_text_pieces(episode_data=ep_data))
 
+    # filter out empty pieces:
+    texts = [t for t in texts if t.who != '' and t.text != '']
+
+    # Fix name typos:
+    for t in texts:
+        for k, v in name_typos.items():
+            if t.who in v:
+                t.who = k
+
     matt_texts = [t for t in texts if t.who == "MATT"]
     people = set([t.who for t in texts])
 
-    m = parsing_mistakes = [t for t in texts if t.who not in players and t.who != "MATT"]
+    m = parsing_mistakes = [t for t in texts if t.who not in players + other + dm]
 
 
 def test_regex_pattern():
@@ -86,3 +110,5 @@ def test_regex_pattern():
     print(re.split(pattern, y))
     print(re.split(pattern, z))
 
+
+# todo: filter out the commercials.
