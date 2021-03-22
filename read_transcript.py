@@ -92,10 +92,20 @@ if __name__ == '__main__':
             if t.who in v:
                 t.who = k
 
-    matt_texts = [t for t in texts if t.who == "MATT"]
-    people = set([t.who for t in texts])
+    # Filter the weird mistakes where text field is a TextPiece:
+    texts = [t for t in texts if type(t.text) is str]
 
-    m = parsing_mistakes = [t for t in texts if t.who not in players + other + dm]
+    # Filter out non-player and non-dm dialogues:
+    texts = [t for t in texts if t.who in players + dm]
+
+    # todo: filter out commercials
+
+    # DM spoken texts
+    matt_texts = [t for t in texts if t.who == "MATT"]
+
+    # Fun facts:
+    word_count = sum([len(t.text.split()) for t in texts])
+    word_count_matt = sum([len(t.text.split()) for t in matt_texts])
 
 
 def test_regex_pattern():
@@ -109,6 +119,3 @@ def test_regex_pattern():
     print(re.split(pattern, x))
     print(re.split(pattern, y))
     print(re.split(pattern, z))
-
-
-# todo: filter out the commercials.
