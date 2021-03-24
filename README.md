@@ -16,9 +16,14 @@ and saves them to a JSON file.
 
 * **file_utils.py**: saving data to files and loading data from files.
 
+* **read_transcripts.py: ** reads the json data and finds speaker and dialogue text units. Filters out players and dms.
+
 ## todos
 
-* organize / restructure transcript data. How much does time axis matter?
-* interpret words / contextualize them
-* which ML method / architecture to use?
+* organize / restructure transcript data. How much does time axis matter? Include intervals?
+* interpret words / contextualize them - add some kind of language model
+* which ML method / architecture to use? train a NN to get a response word cloud and build response using a language model.
 
+## Resources
+
+https://github.com/roddds/critrole/blob/master/criticalrole%20talking.ipynb

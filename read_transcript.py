@@ -6,7 +6,7 @@ import re
 players = ["TRAVIS", "LAURA", "SAM", "LIAM", "ASHLEY", "TALIESIN", "MARISHA",
            "ASHLY", "DEBORAH", "SUMALEE", "KHARY", "MICA"]
 
-dm = ["MATT", "MATTHEW"]
+dm = "MATT"
 other = ["MARK", "DANI", "AUDIENCE", "BRIAN", "EVERYONE", "ALL", "BRANDON", "KEVIN", "MEREDITH", ""]
 
 name_typos = {
@@ -96,26 +96,16 @@ if __name__ == '__main__':
     texts = [t for t in texts if type(t.text) is str]
 
     # Filter out non-player and non-dm dialogues:
-    texts = [t for t in texts if t.who in players + dm]
+    texts = [t for t in texts if t.who in players + [dm]]
 
-    # todo: filter out commercials
+    # todo: filter out commercials?
 
     # DM spoken texts
-    matt_texts = [t for t in texts if t.who == "MATT"]
+    matt_texts = [t for t in texts if t.who == dm]
+
+    # Player spoken texts
+    player_texts = [t for t in texts if t.who in players]
 
     # Fun facts:
     word_count = sum([len(t.text.split()) for t in texts])
     word_count_matt = sum([len(t.text.split()) for t in matt_texts])
-
-
-def test_regex_pattern():
-    import re
-    pattern = r'([A-Z]{3,}):'
-
-    x = "just a normal string"
-    y = "MATT: This starts a new one"
-    z = "this has text before, MATT: wooah"
-
-    print(re.split(pattern, x))
-    print(re.split(pattern, y))
-    print(re.split(pattern, z))

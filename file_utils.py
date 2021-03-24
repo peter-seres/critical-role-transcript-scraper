@@ -21,3 +21,16 @@ def load_json(filename: str) -> dict:
     import json
     with open(filename) as f:
         return json.load(f)
+
+
+def test_regex_pattern():
+    import re
+    pattern = r'([A-Z]{3,}):'
+
+    x = "just a normal string"
+    y = "MATT: This starts a new one"
+    z = "this has text before, MATT: wooah"
+
+    print(re.split(pattern, x))
+    print(re.split(pattern, y))
+    print(re.split(pattern, z))
